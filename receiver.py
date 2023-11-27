@@ -65,9 +65,10 @@ class RDTReceiver:
             print('\033[91m' + 'Receiver: received corrupted packet: ' + str(rcv_pkt) + '\033[0m')
             return self.make_reply_pkt(self.sequence, rcv_pkt['checksum'])
         
-        # if(not self.is_expected_seq(rcv_pkt, self.sequence)):
-        #     print('\033[91m' + 'Receiver: received out of order packet: ' + str(rcv_pkt) + '\033[0m')
-        #     return self.make_reply_pkt(self.sequence, rcv_pkt['checksum'])
+        if self.sequence == '0':
+            self.sequence = '1'
+        if self.sequence == '1':
+            self.sequence = '0'
         # deliver the data to the process in the application layer
 
         ReceiverProcess.deliver_data(rcv_pkt['data'])
