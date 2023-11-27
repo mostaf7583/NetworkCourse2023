@@ -1,3 +1,6 @@
+import re
+
+
 class SenderProcess:
     """ Represent the sender process in the application layer  """
 
@@ -37,9 +40,7 @@ class RDTSender:
         :param data: one and only one character, for example data = 'A'
         :return: the ASCII code of the character, for example ASCII('A') = 65
         """
-        # TODO provide your own implementation
-        checksum = None  # you need to change that
-        return checksum
+        return ord(data)
 
     @staticmethod
     def clone_packet(packet):
@@ -60,9 +61,7 @@ class RDTSender:
         :param reply: a python dictionary represent a reply sent by the receiver
         :return: True -> if the reply is corrupted | False ->  if the reply is NOT corrupted
         """
-        # TODO provide your own implementation
-        pass
-
+        return reply['checksum'] != ord(reply['ack'])
     @staticmethod
     def is_expected_seq(reply, exp_seq):
         """ Check if the received reply from receiver has the expected sequence number
@@ -70,8 +69,7 @@ class RDTSender:
         :param exp_seq: the sender expected sequence number '0' or '1' represented as a character
         :return: True -> if ack in the reply match the   expected sequence number otherwise False
         """
-        # TODO provide your own implementation
-        pass
+        return reply['ack'] == exp_seq
 
     @staticmethod
     def make_pkt(seq, data, checksum):
@@ -99,7 +97,19 @@ class RDTSender:
 
             checksum = RDTSender.get_checksum(data)
             pkt = RDTSender.make_pkt(self.sequence, data, checksum)
+            if self.sequence == '0':
+                self.sequence = '1'
+            print(f'\033[92m Sender: {pkt}\033[0m')
             reply = self.net_srv.udt_send(pkt)
+            if(reply['ack'] == '0'):
+                self.sequence = '0'
+            else:
+                self.sequence = '1'
+            
+
+            print('reply', reply)
+            
+
 
         print(f'Sender Done!')
         return

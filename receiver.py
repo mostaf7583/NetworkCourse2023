@@ -31,8 +31,7 @@ class RDTReceiver:
             :param packet: a python dictionary represent a packet received from the sender
             :return: True -> if the reply is corrupted | False ->  if the reply is NOT corrupted
         """
-        # TODO provide your own implementation
-        pass
+        return packet['checksum'] != ord(packet['data'])
 
     @staticmethod
     def is_expected_seq(rcv_pkt, exp_seq):
@@ -41,8 +40,7 @@ class RDTReceiver:
          :param exp_seq: the receiver expected sequence number '0' or '1' represented as a character
          :return: True -> if ack in the reply match the   expected sequence number otherwise False
         """
-        # TODO provide your own implementation
-        pass
+        return rcv_pkt['sequence_number'] == exp_seq
 
 
     @staticmethod
@@ -63,13 +61,20 @@ class RDTReceiver:
         :param rcv_pkt: a packet delivered by the network layer 'udt_send()' to the receiver
         :return: the reply packet
         """
-
-        # TODO provide your own implementation
-
+        if(self.is_corrupted(rcv_pkt) or not self.is_expected_seq(rcv_pkt, self.sequence)):
+            print('\033[91m' + 'Receiver: received corrupted packet: ' + str(rcv_pkt) + '\033[0m')
+            return self.make_reply_pkt(self.sequence, rcv_pkt['checksum'])
+        
+        # if(not self.is_expected_seq(rcv_pkt, self.sequence)):
+        #     print('\033[91m' + 'Receiver: received out of order packet: ' + str(rcv_pkt) + '\033[0m')
+        #     return self.make_reply_pkt(self.sequence, rcv_pkt['checksum'])
         # deliver the data to the process in the application layer
+
         ReceiverProcess.deliver_data(rcv_pkt['data'])
+        # print in blue font color the received packet data     
+        print('\033[94m' + 'Receiver: received packet: ' + str(rcv_pkt) + '\033[0m')
+        
 
-        #reply_pkt = RDTReceiver.make_reply_pkt()
-        #return reply_pkt
+        reply_pkt = self.make_reply_pkt(self.sequence,rcv_pkt['checksum'])
+        return reply_pkt
 
-        return None

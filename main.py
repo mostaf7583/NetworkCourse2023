@@ -4,8 +4,10 @@ from sender import SenderProcess, RDTSender
 import sys
 
 if __name__ == '__main__':
-    args = dict([arg.split('=', maxsplit=1) for arg in sys.argv[1:]])
-    print(args)
+   
+# make adummy args
+    args = {'msg': 'TEST', 'rel': '0.7', 'delay': '0', 'debug': '0', 'pkt': '1', 'ack': '1'}
+    print(sys.argv)
     msg = args['msg']
     prob_to_deliver = float(args['rel'])
     delay = int(args['delay'])
@@ -24,6 +26,7 @@ if __name__ == '__main__':
                                 ack_corrupt=corrupt_ack)
 
     rdt_sender = RDTSender(network_serv)
+    
     rdt_sender.rdt_send(SenderProcess.get_outgoing_data())
 
     print(f'Receiver received: {ReceiverProcess.get_buffer()}')
