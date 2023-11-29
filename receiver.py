@@ -55,19 +55,23 @@ class RDTReceiver:
             'checksum': checksum
         }
         return reply_pck
-
+ 
+ 
+        
     def rdt_rcv(self, rcv_pkt):
         """  Implement the RDT v2.2 for the receiver
         :param rcv_pkt: a packet delivered by the network layer 'udt_send()' to the receiver
         :return: the reply packet
         """
-        if(self.is_corrupted(rcv_pkt) or not self.is_expected_seq(rcv_pkt, self.sequence)):
+        flipped = '0' if self.sequence == '1' else '1'
+        if self.is_corrupted(rcv_pkt) or not self.is_expected_seq(rcv_pkt, self.sequence):
             print('\033[91m' + 'Receiver: received corrupted packet: ' + str(rcv_pkt) + '\033[0m')
-            return self.make_reply_pkt(self.sequence, rcv_pkt['checksum'])
+            
+            return self.make_reply_pkt(flipped, ord(flipped))
         
         if self.sequence == '0':
             self.sequence = '1'
-        if self.sequence == '1':
+        else:
             self.sequence = '0'
         # deliver the data to the process in the application layer
 
@@ -76,6 +80,6 @@ class RDTReceiver:
         print('\033[94m' + 'Receiver: received packet: ' + str(rcv_pkt) + '\033[0m')
         
 
-        reply_pkt = self.make_reply_pkt(self.sequence,rcv_pkt['checksum'])
+        reply_pkt = self.make_reply_pkt(self.sequence,ord(self.sequence))
         return reply_pkt
 
