@@ -1,4 +1,3 @@
-Certainly! Below are Finite State Machine (FSM) diagrams for the sender and receiver sides of the Reliable Data Transfer (RDT) protocol:
 
 ### Sender FSM Diagram:
 
