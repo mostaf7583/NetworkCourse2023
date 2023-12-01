@@ -2,69 +2,9 @@ Certainly! Below are Finite State Machine (FSM) diagrams for the sender and rece
 
 ### Sender FSM Diagram:
 
-```
-  +-----------+            +-------------+
-  |           |            |             |
-  |  Start    |------------|    Wait     |
-  |           |            |    for      |
-  |           |            |  ACK/NAK    |
-  +-----------+            +-------------+
-        |                        |
-        | on timeout             | on ACK/NAK
-        v                        v
-  +-----------+            +-------------+
-  |           |            |             |
-  |  Resend   |------------|   Wait for  |
-  |  Packet   |            |   ACK/NAK   |
-  |           |            |             |
-  +-----------+            +-------------+
-        |                        |
-        | on timeout             | on ACK/NAK
-        v                        v
-  +-----------+            +-------------+
-  |           |            |             |
-  |  Resend   |------------|   Wait for  |
-  |  Packet   |            |   ACK/NAK   |
-  |           |            |             |
-  +-----------+            +-------------+
-        |                        |
-        | on timeout             | on ACK/NAK
-        v                        v
-  +-----------+            +-------------+
-  |           |            |             |
-  |   Done    |<-----------|   Done      |
-  |           |            |             |
-  +-----------+            +-------------+
-```
+
 
 ### Receiver FSM Diagram:
-
-```
-  +-----------+            +-------------+
-  |           |            |             |
-  |  Start    |------------|    Wait     |
-  |           |            |    for      |
-  |           |            |  Packet     |
-  +-----------+            +-------------+
-        |                        |
-        | on packet              | on timeout
-        v                        v
-  +-----------+            +-------------+
-  |           |            |             |
-  |  Deliver  |------------|   Ack/Nak   |
-  |   Data    |            |             |
-  |           |            |             |
-  +-----------+            +-------------+
-        |                        |
-        | on ACK/Nak            | on packet
-        v                        v
-  +-----------+            +-------------+
-  |           |            |             |
-  |  Deliver  |------------|   Wait for  |
-  |   Data    |            |   Packet    |
-  |           |            |             |
-  +-----------+            +-------------+
-```
 
 ### Pseudo-Code for RDT Sender:
 
@@ -99,3 +39,6 @@ procedure rdt_rcv(received_packet):
 ```
 
 Note: The pseudo-code provided is a high-level representation and may need to be adapted based on the specific details and requirements of your RDT implementation.
+###Contributers:
+mostafa mohamed mostafa Ibraim sallam 
+ID:49-6353
