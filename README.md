@@ -24,21 +24,45 @@ procedure rdt_send(data):
 ```
 
 ### Pseudo-Code for RDT Receiver:
-
 ```
-procedure rdt_rcv(received_packet):
-    if is_packet_corrupted(received_packet) or not is_expected_sequence(received_packet):
-        send_ack_or_nak(flip_sequence(current_sequence))
-        return
+function rdt_rcv(rcv_pkt):
+    if (is_corrupted(rcv_pkt) || !is_expected_seq(rcv_pkt, sequence)):
+        print("Receiver: received corrupted packet:", rcv_pkt)
+        return make_reply_pkt(flipped, ord(flipped))
 
-    deliver_data_to_application_layer(received_packet)
-    send_ack_or_nak(current_sequence)
-    switch_sequence()
+    if (sequence == '0'):
+        sequence = '1'
+    else:
+        sequence = '0'
 
-    print("Receiver: received packet:", received_packet)
+    ReceiverProcess.deliver_data(rcv_pkt['data'])
+    print("Receiver: received packet:", rcv_pkt)
+
+    reply_pkt = make_reply_pkt(sequence, ord(sequence))
+    return reply_pkt
 ```
 
-Note: The pseudo-code provided is a high-level representation and may need to be adapted based on the specific details and requirements of your RDT implementation.
+Here's a breakdown of the pseudocode:
+
+1. **Check for corrupted or unexpected packet:**
+   - If the packet is corrupted or not the expected sequence, print an error message.
+   - Create and return a reply packet with the flipped sequence number.
+
+2. **Update the sequence number:**
+   - Toggle the sequence number between '0' and '1'.
+
+3. **Deliver data to the application layer:**
+   - Pass the received packet's data to the ReceiverProcess.deliver_data function.
+
+4. **Print the received packet data:**
+   - Display a message indicating the received packet.
+
+5. **Create the reply packet:**
+   - Generate a reply packet using the updated sequence number and its ASCII code value.
+
+6. **Return the reply packet:**
+   - Send the generated reply packet back to the sender.
+
 ###Contributers:
 mostafa mohamed mostafa Ibraim sallam 
 ID:49-6353
