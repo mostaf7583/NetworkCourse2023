@@ -7,20 +7,29 @@ Certainly! Below are Finite State Machine (FSM) diagrams for the sender and rece
 ### Receiver FSM Diagram:
 
 ### Pseudo-Code for RDT Sender:
-
 ```
-procedure rdt_send(data):
-    for each character in data:
-        create_packet(sequence, character, calculate_checksum(character))
-        send_packet_to_network_layer(packet)
-        wait_for_ack_or_nak()
+function rdt_send(process_buffer):
+    for each data in process_buffer:
+        checksum = get_checksum(data)
+        pkt = make_pkt(sequence, data, checksum)
+        pkt_clone = clone_packet(pkt)
+        print('Sender:', pkt)
+        reply = net_srv.udt_send(pkt)
+        print('reply', reply)
 
-        while not received_ack_or_nak() or is_ack_or_nak_corrupted():
-            resend_packet()
+        while is_corrupted(reply) or not is_expected_seq(reply, sequence):
+            print('Sender: received corrupted packet:', reply)
+            print('Sender: resending packet:', pkt)
+            checksum = get_checksum(data)
+            pkt = make_pkt(sequence, data, checksum)
+            reply = net_srv.udt_send(pkt)
 
-        switch_sequence_number()
+        if sequence == '0':
+            sequence = '1'
+        else:
+            sequence = '0'
 
-    print("Sender Done!")
+    print('Sender Done!')
 ```
 
 ### Pseudo-Code for RDT Receiver:
