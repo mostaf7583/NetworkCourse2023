@@ -71,8 +71,15 @@ Here's a breakdown of the pseudocode:
 
 6. **Return the reply packet:**
    - Send the generated reply packet back to the sender.
-
+### Test cases 
+```
+    args = {'msg': 'TEST', 'rel': '0.7', 'delay': '0', 'debug': '0', 'pkt': '1', 'ack': '1'}
+```
 ![image](https://github.com/mostaf7583/NetworkCourse2023/assets/73074293/09b175f7-b081-4a28-822d-55423046be62)
+```
+args = {'msg': 'TEST', 'rel': '0.7', 'delay': '0', 'debug': '0', 'pkt': '1', 'ack': '1'}
+```
+![image](https://github.com/mostaf7583/NetworkCourse2023/assets/73074293/9f1356b0-4d81-44f3-9e6f-b8742c8785d7)
 
 ### Contributers:
 mostafa mohamed mostafa Ibraim sallam 
