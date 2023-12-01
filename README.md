@@ -3,8 +3,10 @@ Certainly! Below are Finite State Machine (FSM) diagrams for the sender and rece
 ### Sender FSM Diagram:
 
 
+![rdt_fsm_description](https://github.com/mostaf7583/NetworkCourse2023/assets/73074293/2024cc79-9f23-43d7-b018-501c9d765ecb)
 
 ### Receiver FSM Diagram:
+![rdt_rcv_fsm](https://github.com/mostaf7583/NetworkCourse2023/assets/73074293/e6f7221d-cede-45c4-ba64-ac1ea96d1b60)
 
 ### Pseudo-Code for RDT Sender:
 ```
